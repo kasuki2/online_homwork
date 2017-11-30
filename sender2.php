@@ -44,6 +44,7 @@
 
             if(el.className === "word")
             {
+
                 nyit = false;
                 var pari = el.parentNode;
                 document.getElementById(pari.id).style.visibility = "hidden";
@@ -57,6 +58,17 @@
                 avonal.innerHTML = el.innerHTML;
                 avonal.style.color = "#4466ff";
                 avonal.style.fontWeight = "bold";
+
+                // write in solution to the json tree
+                var azo = el.id;
+                var szamok = azo.split("w"); // 0 hanyadik mondat; 1 hagyadik gap; 2 hanyadik szó, ez a megoldás száma
+                var szam1 = parseInt(szamok[0]);
+                var szam2 = parseInt(szamok[1]);
+
+
+                obj[0].contents[szam1].solutions[szam2] = szamok[2];
+                var miez = obj[0].contents[szam1].solutions[szam2];
+                alert(miez);
             }
 
             if(el.className === "tooltip2") // vonal click
@@ -77,6 +89,7 @@
 
 
 
+
         }
 
         function valami()
@@ -88,11 +101,12 @@
             }
         }
 
-
+        var obj;
         function uzi2(inp)
         {
             var minden = "";
-            var obj = JSON.parse(inp);
+            obj = JSON.parse(inp);
+
             var contents = obj[0].contents;
 
             for(i=0;i<contents.length;i++)
@@ -113,7 +127,7 @@
                         var inn = "";
                         for(b=0;b<dist.length;b++)
                         {
-                            inn = inn + "<span class='word' id='" + i + k + d + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
+                            inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
                         }
                     }
                     var agi = contents[i].solutions;
