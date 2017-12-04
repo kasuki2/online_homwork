@@ -50,6 +50,7 @@
 class BigFrame
 {
     public $title;
+    public $uid;
     public $instructions;
     public $contents; // array of arrays of OneItem
 }

@@ -68,7 +68,7 @@
 
                 obj[0].contents[szam1].solutions[szam2] = szamok[2];
                 var miez = obj[0].contents[szam1].solutions[szam2];
-                alert(miez);
+               // alert(miez);
             }
 
             if(el.className === "tooltip2") // vonal click
@@ -92,6 +92,36 @@
 
         }
 
+        function check()
+        {
+            var mind = "";
+            var contents = obj[0].contents;
+
+
+            for(i=0;i<contents.length;i++)
+            {
+
+                var sentence = contents[i].solutions;
+
+
+                for(k=0;k<sentence.length;k++)
+                {
+                    var agi = contents[i].solutions;
+                    mind = mind + agi[k] + "_";
+
+                }
+
+
+            }
+            if(mind.includes("GGG"))
+            {
+                alert("Nem írtál be választ minden kérdéshez.");
+            }
+            document.getElementById("test2").innerHTML = mind;
+            document.getElementById("userstips").value = mind;
+            document.getElementById("soluform").submit();
+        }
+
         function valami()
         {
             if(popupid != "")
@@ -104,9 +134,11 @@
         var obj;
         function uzi2(inp)
         {
+
+
             var minden = "";
             obj = JSON.parse(inp);
-
+            document.getElementById("title").innerHTML = obj[0].uid;
             var contents = obj[0].contents;
 
             for(i=0;i<contents.length;i++)
@@ -155,14 +187,25 @@
     </script>
 </head>
 <body>
-<a href="grami.php">grami</a>
+<a href="grami.php">grami</a><br/>
+<div id="title">cim</div>
 <button onclick="loadDoc();" >nyom</button>
-<button onclick="valami();">eltuntet</button>
+<button onclick="valami();">eltuntet</button><br>
+<button onclick="check();">check</button>
 <br />
 
 <span id="afull"></span><br /><br />
 <span id="demo" ></span>
 <div id="test">???</div>
+
+<div id="test2" >???</div>
+<form id="soluform" method="post"  action="checker.php">
+
+<input type="hidden" id="userstips" name="solus" value="3333">
+
+
+</form>
+
 </body>
 
 </html>
