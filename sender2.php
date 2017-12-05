@@ -93,10 +93,13 @@
         }
 
 
-        function testCheck()
+
+        function testCheck(usTips, sols)
         {
-            var userTipps = "0-1-0";
-            var solus = ["1a-1-1a", "0a-1-0a"];
+            var userTipps = usTips; // string with -
+            var solus = sols; // array
+            userTipps = "0-1-0";
+            solus = ["1a-1-1a", "0a-1-0a"];
 
             var usT = userTipps.split("-");
 
@@ -152,7 +155,7 @@
                     }
                 }
 
-                var bestsolu = new Object();
+                var bestsolu = {};
                 bestsolu.sol = finals;
                 bestsolu.total = totcor;
                 bestsolus.push(bestsolu);
@@ -166,9 +169,15 @@
             }
 
 
-            alert(bestsolus.length);
 
+            var ossz = "";
 
+            bestsolus.sort(function(a, b){return b.total - a.total});
+            for(z=0;z<bestsolus.length;z++)
+            {
+                ossz = ossz + bestsolus[z].total + "-";
+            }
+            alert(ossz);
         }
 
 

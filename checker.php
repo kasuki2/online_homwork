@@ -35,6 +35,94 @@ $usersolus = $_POST["solus"];
 
     var obj;
 
+    function testCheck(usTips, sols)
+    {
+        var userTipps = usTips; // string with -
+        var solus = sols; // array
+        userTipps = "0-1-0";
+        solus = ["1a-1-1a", "0a-1-0a"];
+
+        var usT = userTipps.split("-");
+
+        var finals = [];
+        var numa = 0;
+        var bestsolus = [];
+
+
+        for(s=0;s<solus.length;s++)
+        {
+            var totcor = 0;
+            var corre = solus[s].split("-");
+            for(i=0;i<corre.length;i++)
+            {
+                if(corre[i].includes("a")) // a found A-kötés
+                {
+                    numa++;
+                    var ok = false;
+                    for(k=0;k<corre.length;k++) // check all
+                    {
+                        if(corre[k].includes("a") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                        {
+                            ok = false;
+                            break;
+                        }
+                        else
+                        {
+                            ok = true;
+                        }
+                    }
+                    if(ok)
+                    {
+                        finals[i] = "1"; // correct
+                        totcor++;
+                    }
+                    else
+                    {
+                        finals[i] = "0"; // incorrect
+                    }
+
+                }
+                else // nincs kötés
+                {
+                    if(corre[i].includes(usT[i]))
+                    {
+                        finals[i] = "1"; // correct
+                        totcor++;
+                    }
+                    else
+                    {
+                        finals[i] = "0"; // not correct
+                    }
+                }
+            }
+
+            var bestsolu = {};
+            bestsolu.sol = finals;
+            bestsolu.total = totcor;
+            bestsolus.push(bestsolu);
+            var min = "";
+            for(i=0;i<finals.length;i++)
+            {
+                min = min + finals[i];
+            }
+
+            //alert(min + " " + numa);
+        }
+
+
+
+        var ossz = "";
+
+        bestsolus.sort(function(a, b){return b.total - a.total});
+        for(z=0;z<bestsolus.length;z++)
+        {
+            ossz = ossz + bestsolus[z].total + "-";
+        }
+        alert(ossz);
+    }
+
+
+
     function process(inp)
     {
         var userSol = userSolus.split("_");
@@ -54,7 +142,7 @@ $usersolus = $_POST["solus"];
             // var_dump($distract1);
 
             var corSolu = contents[i].solu; // ez egy array
-
+            // testCheck(usTips, sols); string + array
             var corr = "";
             for(k=0;k<sentence.length;k++)
             {
