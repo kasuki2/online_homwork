@@ -37,24 +37,28 @@ $usersolus = $_POST["solus"];
 
     function testCheck(usTips, sols)
     {
-        var userTipps = usTips; // string with -
-        var solus = sols; // array
-        userTipps = "0-1-0";
-        solus = ["1a-1-1a", "0a-1-0a"];
+        alert("Itt vagyok testChek");
+        //alert("testCheck says: " + usTips);
+        //return;
 
-        var usT = userTipps.split("-");
+
+        //userTipps = "0-1-1-1-1-0";
+        //solus = ["1a-1d-1a-1d-1-1d"];
+
+        var usT = usTips.split('-');
 
         var finals = [];
         var numa = 0;
         var bestsolus = [];
+        //var betuk = ["a", "b", "c", "d"];
 
-
-        for(s=0;s<solus.length;s++)
+        for(s=0;s<sols.length;s++)
         {
             var totcor = 0;
-            var corre = solus[s].split("-");
+            var corre = sols[s].split('-');
             for(i=0;i<corre.length;i++)
             {
+
                 if(corre[i].includes("a")) // a found A-kötés
                 {
                     numa++;
@@ -82,6 +86,81 @@ $usersolus = $_POST["solus"];
                     }
 
                 }
+                else if(corre[i].includes("b"))
+                {
+                    ok = false;
+                    for(k=0;k<corre.length;k++) // check all
+                    {
+                        if(corre[k].includes("b") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                        {
+                            ok = false;
+                            break;
+                        }
+                        else
+                        {
+                            ok = true;
+                        }
+                    }
+                    if(ok)
+                    {
+                        finals[i] = "1"; // correct
+                        totcor++;
+                    }
+                    else
+                    {
+                        finals[i] = "0"; // incorrect
+                    }
+                }
+                else if(corre[i].includes("c"))
+                {
+                    ok = false;
+                    for(k=0;k<corre.length;k++) // check all
+                    {
+                        if(corre[k].includes("c") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                        {
+                            ok = false;
+                            break;
+                        }
+                        else
+                        {
+                            ok = true;
+                        }
+                    }
+                    if(ok)
+                    {
+                        finals[i] = "1"; // correct
+                        totcor++;
+                    }
+                    else
+                    {
+                        finals[i] = "0"; // incorrect
+                    }
+                }
+                else if(corre[i].includes("d"))
+                {
+                    ok = false;
+                    for(k=0;k<corre.length;k++) // check all
+                    {
+                        if(corre[k].includes("d") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                        {
+                            ok = false;
+                            break;
+                        }
+                        else
+                        {
+                            ok = true;
+                        }
+                    }
+                    if(ok)
+                    {
+                        finals[i] = "1"; // correct
+                        totcor++;
+                    }
+                    else
+                    {
+                        finals[i] = "0"; // incorrect
+                    }
+                }
                 else // nincs kötés
                 {
                     if(corre[i].includes(usT[i]))
@@ -106,19 +185,25 @@ $usersolus = $_POST["solus"];
                 min = min + finals[i];
             }
 
-            //alert(min + " " + numa);
+            //alert(min);
         }
 
 
 
         var ossz = "";
 
-        bestsolus.sort(function(a, b){return b.total - a.total});
+         bestsolus.sort(function(a, b){return b.total - a.total});
+
+
+        //  return bestsolus[0].sol; // return a bestsolu object
+        alert(bestsolus[0].sol);
+        /*
         for(z=0;z<bestsolus.length;z++)
-        {
+         {
             ossz = ossz + bestsolus[z].total + "-";
         }
         alert(ossz);
+        */
     }
 
 
@@ -141,11 +226,34 @@ $usersolus = $_POST["solus"];
             distract1 = contents[i].distractors;
             // var_dump($distract1);
 
-            var corSolu = contents[i].solu; // ez egy array
-            // testCheck(usTips, sols); string + array
+            var corSolu = contents[i].solu; // ez egy array???
+
             var corr = "";
+
+            var kulsoSols = "";
             for(k=0;k<sentence.length;k++)
             {
+                var sols = "";
+                if(k==0)
+                {
+                    for(var v=von;v<von + sentence.length-1;v++)
+                    {
+                        sols = sols + userSol[v] + "-";
+                    }
+                    kulsoSols = sols;
+                    var mindi = "";
+                    for(q=0;q<corSolu.length;q++)
+                    {
+                        mindi = mindi + corSolu[q];
+                    }
+                    alert(kulsoSols + " ::: " + corSolu + " ho: " + corSolu.length);
+                   //  testCheck(kulsoSols, corSolu);
+                  //  var finalSole = testCheck(kulsoSols, corSolu); //string + array
+                   //  alert(finalSole);
+                }
+
+                // egy sor összes user tipple egy stringbe, pl: 1-1-0
+
 
 
 

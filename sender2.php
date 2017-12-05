@@ -98,15 +98,15 @@
         {
             var userTipps = usTips; // string with -
             var solus = sols; // array
-            userTipps = "0-1-0";
-            solus = ["1a-1-1a", "0a-1-0a"];
+            userTipps = "1-";
+            solus = ["1"];
 
             var usT = userTipps.split("-");
 
             var finals = [];
             var numa = 0;
             var bestsolus = [];
-
+            var betuk = ["a", "b", "c", "d"];
 
             for(s=0;s<solus.length;s++)
             {
@@ -114,6 +114,7 @@
                 var corre = solus[s].split("-");
                 for(i=0;i<corre.length;i++)
                 {
+
                     if(corre[i].includes("a")) // a found A-kötés
                     {
                         numa++;
@@ -141,6 +142,81 @@
                         }
 
                     }
+                    else if(corre[i].includes("b"))
+                    {
+                        ok = false;
+                        for(k=0;k<corre.length;k++) // check all
+                        {
+                            if(corre[k].includes("b") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                            {
+                                ok = false;
+                                break;
+                            }
+                            else
+                            {
+                                ok = true;
+                            }
+                        }
+                        if(ok)
+                        {
+                            finals[i] = "1"; // correct
+                            totcor++;
+                        }
+                        else
+                        {
+                            finals[i] = "0"; // incorrect
+                        }
+                    }
+                    else if(corre[i].includes("c"))
+                    {
+                        ok = false;
+                        for(k=0;k<corre.length;k++) // check all
+                        {
+                            if(corre[k].includes("c") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                            {
+                                ok = false;
+                                break;
+                            }
+                            else
+                            {
+                                ok = true;
+                            }
+                        }
+                        if(ok)
+                        {
+                            finals[i] = "1"; // correct
+                            totcor++;
+                        }
+                        else
+                        {
+                            finals[i] = "0"; // incorrect
+                        }
+                    }
+                    else if(corre[i].includes("d"))
+                    {
+                        ok = false;
+                        for(k=0;k<corre.length;k++) // check all
+                        {
+                            if(corre[k].includes("d") && corre[k].includes(usT[k]) == false) // correct only if all is correct
+                            {
+                                ok = false;
+                                break;
+                            }
+                            else
+                            {
+                                ok = true;
+                            }
+                        }
+                        if(ok)
+                        {
+                            finals[i] = "1"; // correct
+                            totcor++;
+                        }
+                        else
+                        {
+                            finals[i] = "0"; // incorrect
+                        }
+                    }
                     else // nincs kötés
                     {
                         if(corre[i].includes(usT[i]))
@@ -165,7 +241,7 @@
                     min = min + finals[i];
                 }
 
-                //alert(min + " " + numa);
+               //alert(min);
             }
 
 
@@ -177,7 +253,7 @@
             {
                 ossz = ossz + bestsolus[z].total + "-";
             }
-            alert(ossz);
+            alert(bestsolus[0].sol);
         }
 
 
