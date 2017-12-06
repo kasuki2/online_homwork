@@ -99,7 +99,7 @@
             var userTipps = usTips; // string with -
             var solus = sols; // array
             userTipps = "1-";
-            solus = ["1"];
+            solus = "1";
 
             var usT = userTipps.split("-");
 
@@ -313,20 +313,28 @@
 
                 var distract1 = [];
                 distract1 = contents[i].distractors;
-                // var_dump($distract1);
+
                 for(k=0;k<sentence.length;k++)
                 {
-                    var dist = [];
-                    for(d=0;d<distract1.length;d++)
-                    {
-                        dist = distract1[d];
-
-                        var inn = "";
-                        for(b=0;b<dist.length;b++)
+                        if(k<sentence.length-1)
                         {
-                            inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
+                            var dist = [];
+                            for(d=0;d<distract1[k].length;d++)
+                            {
+                                dist = distract1[k];
+
+                                var inn = "";
+                                for(b=0;b<dist.length;b++)
+                                {
+                                    inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
+                                }
+                            }
                         }
-                    }
+
+
+
+
+
                     var agi = contents[i].solutions;
 
                     var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona'>__________</span><span>" + agi[k] + "</span> <span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";

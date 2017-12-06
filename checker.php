@@ -37,9 +37,8 @@ $usersolus = $_POST["solus"];
 
     function testCheck(usTips, sols)
     {
-        alert("Itt vagyok testChek");
-        //alert("testCheck says: " + usTips);
-        //return;
+
+
 
 
         //userTipps = "0-1-1-1-1-0";
@@ -47,15 +46,22 @@ $usersolus = $_POST["solus"];
 
         var usT = usTips.split('-');
 
+
         var finals = [];
         var numa = 0;
         var bestsolus = [];
         //var betuk = ["a", "b", "c", "d"];
+        var solus = [];
+        solus = sols;
 
-        for(s=0;s<sols.length;s++)
+
+
+        for(s=0;s<solus.length;s++)
         {
             var totcor = 0;
-            var corre = sols[s].split('-');
+            var corre = solus[s].split('-');
+
+
             for(i=0;i<corre.length;i++)
             {
 
@@ -195,8 +201,8 @@ $usersolus = $_POST["solus"];
          bestsolus.sort(function(a, b){return b.total - a.total});
 
 
-        //  return bestsolus[0].sol; // return a bestsolu object
-        alert(bestsolus[0].sol);
+        return bestsolus[0].sol; // return a bestsolu object
+        //alert(bestsolus[0].sol);
         /*
         for(z=0;z<bestsolus.length;z++)
          {
@@ -206,7 +212,30 @@ $usersolus = $_POST["solus"];
         */
     }
 
+    function testCheck2(userTipp, corrSolu)
+    {
+        var solus = [];
+        solus = corrSolu;
+        var corrects = "";
+        for(i=0;i<solus.length;i++)
+        {
+            var corr = solus[i].split('-');
+            var tips = userTipp.split('-');
+            for(c=0;c<corr.length;c++)
+            {
+                if(corr[c].includes(tips[c]))
+                {
+                    corrects = corrects + "1";
+                }
+                else
+                {
+                    corrects = corrects + "0";
+                }
+            }
+        }
 
+        return corrects;
+    }
 
     function process(inp)
     {
@@ -226,11 +255,14 @@ $usersolus = $_POST["solus"];
             distract1 = contents[i].distractors;
             // var_dump($distract1);
 
-            var corSolu = contents[i].solu; // ez egy array???
+          //  var corSolu = contents[i].solu; // ez egy array???
+            var corSolu = [];
+            corSolu = contents[i].solu;
 
             var corr = "";
 
             var kulsoSols = "";
+            var bestsolus = [];
             for(k=0;k<sentence.length;k++)
             {
                 var sols = "";
@@ -244,10 +276,82 @@ $usersolus = $_POST["solus"];
                     var mindi = "";
                     for(q=0;q<corSolu.length;q++)
                     {
-                        mindi = mindi + corSolu[q];
+                        if(q==0)
+                        {
+                            var sepi = "";
+                        }
+                        else
+                        {
+                            sepi = "-";
+                        }
+                        mindi = mindi + sepi + corSolu[q];
                     }
-                    alert(kulsoSols + " ::: " + corSolu + " ho: " + corSolu.length);
-                   //  testCheck(kulsoSols, corSolu);
+                        alert(kulsoSols + " ::: " + corSolu);
+                   //  var bestSol = testCheck2(kulsoSols, corSolu);
+
+                    var totcor = 0;
+                    for(c=0;c<corSolu.length;c++)
+                    {
+                        var corrects = "";
+                        var ajo = corSolu[c].split('-');
+                        var kuls = kulsoSols.split('-');
+                       var ok = false;
+                        for(w=0;w<ajo.length;w++)
+                        {
+                            if(ajo[w].includes('a'))
+                            {
+                                for(u=0;u<ajo.length;u++)
+                                {
+                                    if(ajo[u].includes('a') && ajo[u].includes(kuls[u]) === false)
+                                    {
+                                        ok = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        ok = true;
+                                    }
+                                }
+                                if(ok)
+                                {
+                                    corrects = corrects + "1";
+                                    totcor++;
+                                }
+                                else
+                                {
+                                    corrects = corrects + "0";
+                                }
+                            }
+                            else
+                            {
+                                if(ajo[w].includes(kuls[w]))
+                                {
+                                    corrects = corrects + "1";
+                                    totcor++;
+                                }
+                                else
+                                {
+                                    corrects = corrects + "0";
+                                }
+                            }
+
+
+                        }
+                        var bestsolu = {};
+                        bestsolu.sol = corrects;
+                        bestsolu.total = totcor;
+                        bestsolus.push(bestsolu);
+
+                    }
+                   // alert("corrects: " + corrects);
+
+
+                    bestsolus.sort(function(a, b){return b.total - a.total});
+
+
+                    alert("bestsolus " + bestsolus[0].sol + " bestsolo hossz: " + bestsolus.length); // return a bestsolu object
+
+                  //  alert(bestSol);
                   //  var finalSole = testCheck(kulsoSols, corSolu); //string + array
                    //  alert(finalSole);
                 }
@@ -256,18 +360,21 @@ $usersolus = $_POST["solus"];
 
 
 
-
-                var dist = [];
-                for(d=0;d<distract1.length;d++)
+                if(k<sentence.length-1)
                 {
-                    dist = distract1[d];
-
-                    var inn = "";
-                    for(b=0;b<dist.length;b++)
+                    var dist = [];
+                    for(d=0;d<distract1[k].length;d++)
                     {
-                        inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
+                        dist = distract1[k];
+
+                        var inn = "";
+                        for(b=0;b<dist.length;b++)
+                        {
+                            inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
+                        }
                     }
                 }
+
 
 
 
