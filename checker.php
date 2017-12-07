@@ -3,7 +3,7 @@
 <?php
 
 $usersolus = $_POST["solus"];
-
+$fileNeve = $_POST["fileNeve"];
 ?>
 
 <head lang="en">
@@ -15,6 +15,8 @@ $usersolus = $_POST["solus"];
 <script>
 
     var userSolus = "<?php echo $usersolus; ?>";
+    var fileName = "<?php echo $fileNeve; ?>";
+
     function loadDoc()
     {
         var xhttp = new XMLHttpRequest();
@@ -26,7 +28,7 @@ $usersolus = $_POST["solus"];
 
             }
         };
-        kuld = "adat=valami";
+        kuld = "openthis=" + fileName + ".json";
         xhttp.open("POST", "ajaxsend.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(kuld);
@@ -213,7 +215,7 @@ $usersolus = $_POST["solus"];
     }
 
     var popupid= "";
-    var nyit = true;
+    var nyit = false;
 
     function vonalClick(el)
     {
@@ -228,20 +230,28 @@ $usersolus = $_POST["solus"];
 
 
 
-
         if(el.className === "tooltip2") // vonal click
         {
+
             var popi = el.getElementsByClassName("tooltiptext2");
 
             popupid = popi[0].id;
-            if(nyit === true)
+            if(nyit === false)
             {
                 document.getElementById(popi[0].id).style.visibility = "visible";
                 el.style.backgroundColor = "#ffff66";
             }
-            nyit = true;
+           // nyit = true;
 
         }
+        else
+        {
+            var eleme = document.getElementById(popupid);
+            eleme.style.visibility = "hidden";
+            var vonal = eleme.parentElement;
+            vonal.style.backgroundColor = "transparent";
+        }
+
 
 
 
@@ -380,11 +390,12 @@ $usersolus = $_POST["solus"];
                     var inn = "";
 
                     var dist = [];
+                    var remi = [];
                     for(d=0;d<distract1[k].length;d++)
                     {
                         dist = distract1[k];
 
-
+                        remi = remarks[k];
                        // for(b=0;b<dist.length;b++)
                        // {
                        //     inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + remarks[0] + "</span>";
@@ -400,8 +411,14 @@ $usersolus = $_POST["solus"];
                     else
                     {
                         astyle = "style='color:#ff0000'"; // incorrect solution
-                        inn = "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + remarks[userSol[von]] + "</span>";
+                        inn = "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + remi[userSol[von]] + "</span>";
                     }
+
+                    if(userSol[von].trim() === "GGG")
+                    {
+                        inn = "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + "You didn't provide<br>an answer" + "</span>";
+                    }
+
                 }
 
 
@@ -418,7 +435,7 @@ $usersolus = $_POST["solus"];
                 }
 
 
-                var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona' " + astyle + " >" + vonalRa + "</span><span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
+                var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona' " + astyle + " >" + vonalRa + "</span><span  id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
 
                 if(k == sentence.length -1)
                 {
@@ -441,6 +458,8 @@ $usersolus = $_POST["solus"];
 
         document.getElementById("test").innerHTML = minden;
     }
+
+
 
     function testing()
     {
@@ -481,6 +500,7 @@ $usersolus = $_POST["solus"];
 <button onclick="testing();">test1</button>
 <button onclick="loadDoc();">fill</button>
 <button onclick="clrPopups();">clear popups</button>
+    <br /><br /><br />
 <div id="title">title</div>
 <div style="max-width: 700px" id="test">???</div>
 

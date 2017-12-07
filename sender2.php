@@ -8,8 +8,9 @@
     <script>
 
 
-        function loadDoc()
+        function loadDoc(afile)
         {
+            document.getElementById("fileName").value = afile;
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -19,7 +20,7 @@
 
                 }
             };
-            kuld = "adat=valami";
+            kuld = "openthis=" + afile + ".json";
             xhttp.open("POST", "ajaxsend.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(kuld);
@@ -71,6 +72,7 @@
                // alert(miez);
             }
 
+
             if(el.className === "tooltip2") // vonal click
             {
                 var popi = el.getElementsByClassName("tooltiptext2");
@@ -83,9 +85,9 @@
                 }
                 nyit = true;
 
+               // var elem = document.getElementById("abody");
+              //  elem.addEventListener("click", vonalClick, false);
             }
-
-
 
 
 
@@ -289,11 +291,14 @@
 
         function valami()
         {
-            if(popupid != "")
+            if(popupid !== "") // close previous
             {
+                var eleme = document.getElementById(popupid);
+                eleme.style.visibility = "hidden";
 
-                document.getElementById("s" + popupid).style.visibility = "hidden";
             }
+
+
         }
 
         var obj;
@@ -337,7 +342,8 @@
 
                     var agi = contents[i].solutions;
 
-                    var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona'>__________</span><span>" + agi[k] + "</span> <span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
+                  //  var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona'>__________</span><span>" + agi[k] + "</span> <span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
+                    var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona'>__________</span><span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
 
                     if(k == sentence.length -1)
                     {
@@ -359,13 +365,14 @@
 
     </script>
 </head>
-<body>
+<body class="semmi" id="abody" ">
 <a href="grami.php">grami</a><br/>
 <div id="title">cim</div>
-<button onclick="loadDoc();" >nyom</button>
-<button onclick="valami();">eltuntet</button><br>
-<button onclick="check();">check</button><br/>
-<button onclick="testCheck();">test check</button><br />
+<button onclick="loadDoc('ujfile');" >angol</button>
+<button onclick="loadDoc('ujfile2');" >német</button>
+<!-- <button onclick="valami();">eltuntet</button><br> -->
+<button onclick="check();">submit for checking</button><br/>
+<!-- <button onclick="testCheck();">test check</button><br /> -->
 <br />
 
 <span id="afull"></span><br /><br />
@@ -376,7 +383,7 @@
 <form id="soluform" method="post"  action="checker.php">
 
 <input type="hidden" id="userstips" name="solus" value="3333">
-
+<input type="hidden" id="fileName" name="fileNeve" value="">
 
 </form>
 
