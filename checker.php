@@ -212,30 +212,42 @@ $usersolus = $_POST["solus"];
         */
     }
 
-    function testCheck2(userTipp, corrSolu)
+    var popupid= "";
+    var nyit = true;
+
+    function vonalClick(el)
     {
-        var solus = [];
-        solus = corrSolu;
-        var corrects = "";
-        for(i=0;i<solus.length;i++)
+
+        if(popupid !== "") // close previous
         {
-            var corr = solus[i].split('-');
-            var tips = userTipp.split('-');
-            for(c=0;c<corr.length;c++)
-            {
-                if(corr[c].includes(tips[c]))
-                {
-                    corrects = corrects + "1";
-                }
-                else
-                {
-                    corrects = corrects + "0";
-                }
-            }
+            var eleme = document.getElementById(popupid);
+            eleme.style.visibility = "hidden";
+            var vonal = eleme.parentElement;
+            vonal.style.backgroundColor = "transparent";
         }
 
-        return corrects;
+
+
+
+        if(el.className === "tooltip2") // vonal click
+        {
+            var popi = el.getElementsByClassName("tooltiptext2");
+
+            popupid = popi[0].id;
+            if(nyit === true)
+            {
+                document.getElementById(popi[0].id).style.visibility = "visible";
+                el.style.backgroundColor = "#ffff66";
+            }
+            nyit = true;
+
+        }
+
+
+
     }
+
+
 
     function process(inp)
     {
@@ -254,6 +266,8 @@ $usersolus = $_POST["solus"];
             var distract1 = [];
             distract1 = contents[i].distractors;
             // var_dump($distract1);
+            var remarks = [];
+            remarks = contents[i].remarks;
 
           //  var corSolu = contents[i].solu; // ez egy array???
             var corSolu = [];
@@ -286,7 +300,7 @@ $usersolus = $_POST["solus"];
                         }
                         mindi = mindi + sepi + corSolu[q];
                     }
-                        alert(kulsoSols + " ::: " + corSolu);
+                      //  alert(kulsoSols + " ::: " + corSolu);
                    //  var bestSol = testCheck2(kulsoSols, corSolu);
 
                     var totcor = 0;
@@ -349,7 +363,7 @@ $usersolus = $_POST["solus"];
                     bestsolus.sort(function(a, b){return b.total - a.total});
 
 
-                    alert("bestsolus " + bestsolus[0].sol + " bestsolo hossz: " + bestsolus.length); // return a bestsolu object
+                  //  alert("bestsolus " + bestsolus[0].sol + " bestsolo hossz: " + bestsolus.length); // return a bestsolu object
 
                   //  alert(bestSol);
                   //  var finalSole = testCheck(kulsoSols, corSolu); //string + array
@@ -358,20 +372,35 @@ $usersolus = $_POST["solus"];
 
                 // egy sor összes user tipple egy stringbe, pl: 1-1-0
 
-
+                var jok = bestsolus[0].sol.split("");
+                var astyle = "";
 
                 if(k<sentence.length-1)
                 {
+                    var inn = "";
+
                     var dist = [];
                     for(d=0;d<distract1[k].length;d++)
                     {
                         dist = distract1[k];
 
-                        var inn = "";
-                        for(b=0;b<dist.length;b++)
-                        {
-                            inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + dist[b] + "</span>";
-                        }
+
+                       // for(b=0;b<dist.length;b++)
+                       // {
+                       //     inn = inn + "<span class='word' id='" + i + "w" + k + "w" + b + "' onclick='vonalClick(this)' >" + remarks[0] + "</span>";
+                       // }
+                    }
+
+                   // inn = inn + "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + remarks[userSol[von]] + "</span>";
+                    if(jok[k] == "1")
+                    {
+                        astyle = "style='color:#00ff00'"; // correct solution
+                        inn = "correct solution";
+                    }
+                    else
+                    {
+                        astyle = "style='color:#ff0000'"; // incorrect solution
+                        inn = "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + remarks[userSol[von]] + "</span>";
                     }
                 }
 
@@ -389,7 +418,7 @@ $usersolus = $_POST["solus"];
                 }
 
 
-                var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona'>" + vonalRa + "</span><span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
+                var vonal = "<div class='tooltip2' id='" + i + k  + "' onclick='vonalClick(this);' > <span class='vona' " + astyle + " >" + vonalRa + "</span><span id='s" + i + k + "' class='tooltiptext2'>" + inn + "</span></div>";
 
                 if(k == sentence.length -1)
                 {
@@ -419,6 +448,23 @@ $usersolus = $_POST["solus"];
         alert(user);
     }
 
+    function clrPopups()
+    {
+        if(popupid !== "") // close previous
+        {
+            var eleme = document.getElementById(popupid);
+            eleme.style.visibility = "hidden";
+
+        }
+        /*
+        var allPopups = document.getElementsByClassName("tooltip2");
+        for(i=0;i<allPopups.length;i++)
+        {
+            allPopups[i].style.display = "hidden";
+        }
+        */
+    }
+
 
 </script>
 
@@ -430,13 +476,15 @@ $usersolus = $_POST["solus"];
 
 </head>
 <body>
+<div id="mainContainer" class="container">
 <div><?php echo $usersolus; ?></div>
 <button onclick="testing();">test1</button>
 <button onclick="loadDoc();">fill</button>
+<button onclick="clrPopups();">clear popups</button>
 <div id="title">title</div>
 <div style="max-width: 700px" id="test">???</div>
 
-
+</div>
 
 
 </body>
