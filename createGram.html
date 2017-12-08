@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>cr gram</title>
+
+
+    <style>
+
+        body
+        {
+            background-color: #454545;
+        }
+        #container
+        {
+            width: 1200px;
+            background-color: #efefef;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        #workSpace
+        {
+            width: 800px;
+            background-color: #ffffff;
+            margin-right: auto;
+            margin-left: auto;
+            padding-top: 24px;
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-bottom: 36px;
+        }
+        .textAreaDist
+        {
+            margin: 12px;
+            overflow: hidden;
+        }
+        .textSolus
+        {
+            margin: 8px;
+        }
+
+    </style>
+
+    <script>
+
+        function mondatClick()
+        {
+            var szoveg = document.getElementById("mondat").value;
+            var reszek = szoveg.split('_');
+
+            var bele = "";
+            var sol = "";
+            for(i=0;i<reszek.length-1;i++)
+            {
+                bele = bele + "<textarea class='textAreaDist' id='dists" + i + "' ></textarea>";
+                sol = sol + "<input class='textSolus' type='text' id='solu" + i + "'>";
+                if(i+1%3==0)
+                {
+                    bele = bele + "<br />";
+                }
+            }
+
+            document.getElementById("distractors").innerHTML = bele;
+            document.getElementById("solus").innerHTML = sol;
+        }
+
+
+        function check()
+        {
+            var dists = document.getElementsByClassName("textAreaDist");
+            alert(dists.length);
+        }
+
+        function onTestChange()
+        {
+            var key = window.event.keyCode;
+
+            // If the user has pressed enter
+            if (key === 13) {
+                mondatClick();
+
+            }
+
+        }
+
+    </script>
+
+
+</head>
+<body>
+
+
+<div id="container">
+
+    <div id="workSpace">
+        <div>File neve:<input type="text" id="fileName" ></div><br />
+        <textarea id="mondat" onkeypress="onTestChange();">
+            vala
+        </textarea>
+        <div><button onclick="mondatClick();" >mondat</button></div>
+        <div>Distractors. Start each word with an underscore: _</div>
+        <div id="distractors"></div>
+        <div>Solutions. Write them this way: 0-1-3, separate alternatives with a § sign.</div>
+        <div id="solus" ></div>
+        <button onclick="check();" >check</button>
+    </div>
+
+
+</div>
+
+
+
+
+</body>
+</html>
