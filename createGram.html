@@ -43,17 +43,21 @@
 
     <script>
 
+
+        var gaps = 0;
         function mondatClick()
         {
             var szoveg = document.getElementById("mondat").value;
             var reszek = szoveg.split('_');
-
+            gaps = reszek.length - 1;
             var bele = "";
             var sol = "";
+            var exp = "";
             for(i=0;i<reszek.length-1;i++)
             {
                 bele = bele + "<textarea class='textAreaDist' id='dists" + i + "' ></textarea>";
-                sol = sol + "<input class='textSolus' type='text' id='solu" + i + "'>";
+              //  sol = sol + "<input class='textSolus' type='text' id='solu" + i + "'>";
+                exp = exp + "<textarea class='textAreaDist' id='expl" + i + "' ></textarea>";
                 if(i+1%3==0)
                 {
                     bele = bele + "<br />";
@@ -61,7 +65,11 @@
             }
 
             document.getElementById("distractors").innerHTML = bele;
-            document.getElementById("solus").innerHTML = sol;
+            document.getElementById("solus").innerHTML = "<input class='textSolus' type='text' id='solus2' >";
+            document.getElementById("explana").innerHTML = exp;
+
+            setTimeout(focu, 100);
+
         }
 
 
@@ -83,6 +91,71 @@
 
         }
 
+        function focu()
+        {
+            document.getElementById("dists0").focus();
+        }
+
+
+        function sendin()
+        {
+            var totaltext = "";
+
+            // mondat
+            var amondat = document.getElementById("mondat").value.trim();
+            amondat = amondat + "§"; // mondat lezárása
+
+            // get distractors
+            var dist = "";
+            for(i=0;i<gaps;i++)
+            {
+                var distText = document.getElementById("dists" + i).value.trim();
+                dist = dist + distText + "ß";
+            }
+
+
+
+                var megoText = document.getElementById("solus2").value.trim();
+
+
+
+            var expli = "";
+            for(i=0;i<gaps;i++)
+            {
+                var expText = document.getElementById("expl" + i).value.trim();
+                expli = expli + expText + "ß";
+            }
+
+            document.getElementById("totalText").innerHTML = amondat + dist + "§" + megoText + "§" + expli;
+        }
+
+
+
+
+        function sendData()
+        {
+           var totalText =  document.getElementById("totalText").innerHTML.trim();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+
+                    uzenet(this.responseText);
+
+                }
+            };
+            kuld = "text1=" + totalText;
+            xhttp.open("POST", "ajaxRecGram1.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(kuld);
+        }
+
+
+        function uzenet(inpe)
+        {
+            document.getElementById("totalText").innerHTML = inpe;
+        }
+
     </script>
 
 
@@ -93,16 +166,24 @@
 <div id="container">
 
     <div id="workSpace">
-        <div>File neve:<input type="text" id="fileName" ></div><br />
+        <div>File neve:<input type="text" id="fileName" ><span> Jelszó: </span><input type="text" name="pw"  ></div>
+        <div><textarea id="instru" name="inst" ></textarea></div>
+        <br />
         <textarea id="mondat" onkeypress="onTestChange();">
             vala
         </textarea>
         <div><button onclick="mondatClick();" >mondat</button></div>
         <div>Distractors. Start each word with an underscore: _</div>
         <div id="distractors"></div>
-        <div>Solutions. Write them this way: 0-1-3, separate alternatives with a § sign.</div>
+        <div>Solutions. Write them this way: _0-1-1 _0-0-0 If they bind: _1a-1-1a _0a-1-1a.</div>
         <div id="solus" ></div>
-        <button onclick="check();" >check</button>
+        <div>Explanations. Write: _correct solution _Correct: much, because advice is an uncount</div>
+        <div id="explana"></div>
+        <!-- <button onclick="check();" >check</button>
+        <button onclick="focu();">focus</button> -->
+        <button onclick="sendin();" >generate</button>
+        <button onclick="sendData();">SEND</button>
+        <div id="totalText">??</div>
     </div>
 
 

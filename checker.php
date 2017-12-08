@@ -405,7 +405,7 @@ $fileNeve = $_POST["fileNeve"];
                    // inn = inn + "<span class='word' id='" + i + "w" + k + "w" + "' onclick='vonalClick(this)' >" + remarks[userSol[von]] + "</span>";
                     if(jok[k] == "1")
                     {
-                        astyle = "style='color:#00ff00'"; // correct solution
+                        astyle = "style='color:#008800'"; // correct solution
                         inn = "correct solution";
                     }
                     else
