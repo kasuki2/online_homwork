@@ -35,6 +35,38 @@
         $van = true;
     }
 
+    if(isset($_POST['fnev']))
+    {
+        $fileNeve = $_POST['fnev'] . ".json";
+    }
+    else
+    {
+        echo "Nincs file neve.";
+        exit;
+    }
+
+if(isset($_POST['inst']))
+{
+    $instructions = $_POST['inst'];
+}
+else
+{
+    echo "Nincs instrukció megadva.";
+    exit;
+}
+
+if(isset($_POST['cim']))
+{
+    $atitle = $_POST['cim'];
+}
+else
+{
+    echo "Nincs cím megadva.";
+    exit;
+}
+// cim
+
+
     $pieces = "";
     if($van)
     {
@@ -160,10 +192,17 @@
 
 
 
+        // van-e file
+        $van = file_exists($fileNeve);
+        if(!$van)
+        {
+           // create file
+            $myfile = fopen($fileNeve, "w");
+        }
 
 
 
-        $afile = file_get_contents("ujtestfile.json");
+        $afile = file_get_contents($fileNeve);
         $fileArray = json_decode($afile);
 
 
@@ -173,8 +212,8 @@
         if(count($fileArray)<=0)
         {
             $bFrame = new BigFrame();
-            $bFrame->title = "Nyelvtan";
-            $bFrame->instructions = "Fill in the gaps.";
+            $bFrame->title = $atitle;
+            $bFrame->instructions = $instructions;
 
             $elsoArr = array();
             $elsoArr2 = array();
@@ -186,7 +225,7 @@
             array_push($elsoArr, $bFrame);
 
             $menteni = json_encode($elsoArr);
-            file_put_contents("ujtestfile.json", $menteni);
+            file_put_contents($fileNeve, $menteni);
             echo "saved 1";
 
         }
@@ -196,7 +235,7 @@
             array_push($fileArray[0]->contents, $egym);
 
             $menteni = json_encode($fileArray);
-            file_put_contents("ujtestfile.json", $menteni);
+            file_put_contents($fileNeve, $menteni);
             echo "saved 2";
         }
 

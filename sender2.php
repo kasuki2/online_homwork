@@ -371,6 +371,7 @@
 <button onclick="loadDoc('ujfile');" >angol</button>
 <button onclick="loadDoc('ujfile2');" >német</button>
 <button onclick="loadDoc('ujtestfile');" >angol 2</button>
+<button onclick="loadDoc('which_what_1');" >relative cls</button>
 <!-- <button onclick="valami();">eltuntet</button><br> -->
 <button onclick="check();">submit for checking</button><br/>
 <!-- <button onclick="testCheck();">test check</button><br /> -->

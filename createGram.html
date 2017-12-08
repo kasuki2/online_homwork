@@ -135,6 +135,29 @@
         function sendData()
         {
            var totalText =  document.getElementById("totalText").innerHTML.trim();
+
+            var filNev = document.getElementById("fileName").value.trim();
+            var instr = document.getElementById("instru").value.trim();
+            var cime = document.getElementById("taskTitle").value.trim();
+
+            if(filNev == "")
+            {
+                alert("Nincs file név.");
+                return;
+            }
+
+            if(instr == "")
+            {
+                alert("Nincs instrukció megadva.");
+                return;
+            }
+
+            if(cime == "")
+            {
+                alert("Nincs címe.");
+                return;
+            }
+
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -144,7 +167,7 @@
 
                 }
             };
-            kuld = "text1=" + totalText;
+            kuld = "text1=" + totalText + "&fnev=" + filNev + "&inst=" + instr + "&cim=" + cime;
             xhttp.open("POST", "ajaxRecGram1.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(kuld);
@@ -166,7 +189,8 @@
 <div id="container">
 
     <div id="workSpace">
-        <div>File neve:<input type="text" id="fileName" ><span> Jelszó: </span><input type="text" name="pw"  ></div>
+        <div>File neve:<input type="text" id="fileName" ><span> Jelszó: </span><input type="text" name="pw"  ><span>feladat címe: </span><input type="text" id="taskTitle" ></div>
+        <div>Instructions:</div>
         <div><textarea id="instru" name="inst" ></textarea></div>
         <br />
         <textarea id="mondat" onkeypress="onTestChange();">
